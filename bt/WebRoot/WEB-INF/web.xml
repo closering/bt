@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0" 
+	xmlns="http://java.sun.com/xml/ns/javaee" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+  
+  <servlet>
+  	<servlet-name>dispatcherServlet</servlet-name>
+  	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>dispatcherServlet</servlet-name>
+  	<url-pattern>*.do</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>login</servlet-name>
+  	<servlet-class>com.conn.android.login</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>login</servlet-name>
+  	<url-pattern>/com/conn/android/login</url-pattern>
+  </servlet-mapping>  
+  
+  <servlet>
+  	<servlet-name>ServletTest</servlet-name>
+  	<servlet-class>com.conn.android.ServletTest</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>ServletTest</servlet-name>
+  	<url-pattern>/com/conn/android/ServletTest</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>bidUidScan</servlet-name>
+  	<servlet-class>com.conn.android.bidUidScan</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>bidUidScan</servlet-name>
+  	<url-pattern>/com/conn/android/bidUidScan</url-pattern>
+  </servlet-mapping>
+  
+    <servlet>
+  	<servlet-name>locusInit</servlet-name>
+  	<servlet-class>com.conn.android.locusInit</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>locusInit</servlet-name>
+  	<url-pattern>/com/conn/android/locusInit</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>locusUpload</servlet-name>
+  	<servlet-class>com.conn.android.locusUpload</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>locusUpload</servlet-name>
+  	<url-pattern>/com/conn/android/locusUpload</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>locusDownload</servlet-name>
+  	<servlet-class>com.conn.android.locusDownload</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>locusDownload</servlet-name>
+  	<url-pattern>/com/conn/android/locusDownload</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>searchEpc</servlet-name>
+  	<servlet-class>com.conn.android.searchEpc</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>searchEpc</servlet-name>
+  	<url-pattern>/com/conn/android/searchEpc</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>searchBid</servlet-name>
+  	<servlet-class>com.conn.android.searchBid</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>searchBid</servlet-name>
+  	<url-pattern>/com/conn/android/searchBid</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>searchUid</servlet-name>
+  	<servlet-class>com.conn.android.searchUid</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>searchUid</servlet-name>
+  	<url-pattern>/com/conn/android/searchUid</url-pattern>
+  </servlet-mapping>
+  
+  
+  <servlet>
+  	<servlet-name>locusMark</servlet-name>
+  	<servlet-class>com.conn.android.locusMark</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>locusMark</servlet-name>
+  	<url-pattern>/com/conn/android/locusMark</url-pattern>
+  </servlet-mapping>
+
+  
+  <servlet>
+  	<servlet-name>historyData</servlet-name>
+  	<servlet-class>com.conn.android.historyData</servlet-class>
+  </servlet>
+    
+  <servlet-mapping>
+  	<servlet-name>historyData</servlet-name>
+  	<url-pattern>/com/conn/android/historyData</url-pattern>
+  </servlet-mapping>
+  
+</web-app>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	
+	<bean id = "loginController" class = "com.controller.loginController">
+		<property name= "wrongLogin" value = "login"></property>
+		<property name= "sucessLogin" value = "product"></property>
+	</bean>
+	
+	<bean id = "productController" class = "com.controller.productController">
+		<property name= "wrong" value = "product"></property>
+		<property name= "sucess" value = "product"></property>
+	</bean>
+
+	<bean id = "registerController" class = "com.controller.registerController">
+		<property name= "wrong" value = "register"></property>
+		<property name= "sucess" value = "product"></property>
+	</bean>
+	
+	<bean id = "profileController" class = "com.controller.profileController">
+		<property name= "wrong" value = "login"></property>
+		<property name= "success" value = "user_profile"></property>
+	</bean>
+	
+	<bean id = "bid_uidController" class = "com.controller.bid_uidController">
+		<property name= "wrong" value = "login"></property>
+		<property name= "success" value = "bid_uid"></property>
+	</bean>
+	
+	<bean id = "uid_epcController" class = "com.controller.uid_epcController">
+		<property name= "wrong" value = "login"></property>
+		<property name= "success" value = "uid_epc"></property>
+	</bean>
+	
+	<bean id = "resetController" class = "com.controller.resetController">
+		<property name= "wrong" value = "login"></property>
+		<property name= "sucess" value = "reset"></property>
+	</bean>
+	
+	<bean id = "resetInfoController" class = "com.controller.resetInfoController">
+		<property name= "wrong" value = "login"></property>
+		<property name= "sucess" value = "product"></property>
+		<property name="reset" value = "reset"></property>
+	</bean>
+	
+	<bean id = "searchByEpcController" class = "com.search.searchByEpcController">
+		<property name= "wrong" value = "login"></property>
+		<property name= "sucess" value = "epc"></property>
+	</bean>
+	
+	<bean id = "searchByBidController" class = "com.search.searchByBidController">
+		<property name= "wrong" value = "login"></property>
+		<property name= "sucess" value = "bid"></property>
+	</bean>
+	
+	<bean id = "searchByUidController" class = "com.search.searchByUidController">
+		<property name= "wrong" value = "login"></property>
+		<property name= "sucess" value = "uid"></property>
+	</bean>
+	
+	<bean id = "searchByUidBidController" class = "com.search.searchByUidBidController">
+		<property name= "wrong" value = "login"></property>
+		<property name= "sucess" value = "uidInBid"></property>
+	</bean>
+	
+	<bean id = "recallController" class = "com.controller.recallController">
+		<property name= "wrong" value = "recall"></property>
+		<property name= "success" value = "recall"></property>
+	</bean>
+	
+	<bean id = "bidMapController" class = "com.browse.map.bidMapController">
+		<property name= "wrong" value = "bid"></property>
+		<property name= "success" value = "bid_map"></property>
+	</bean>
+	<bean id = "bidTracingController" class = "com.browse.map.bidTracingController">
+		<property name= "unLogin" value = "login"></property>
+		<property name= "bidNotExist" value = "bidTracing"></property>
+		<property name= "bidExist" value = "showTracing"></property>
+	</bean>
+	<bean id = "uidTracingController" class = "com.browse.map.uidTracingController">
+		<property name= "unLogin" value = "login"></property>
+		<property name= "uidNotExist" value = "uidTracing"></property>
+		<property name= "uidExist" value = "showTracing"></property>
+	</bean>
+	
+	<bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="/login.do">loginController</prop>
+				<prop key="/product.do">productController</prop>
+				<prop key="/register.do">registerController</prop>
+				<prop key="/profile.do">profileController</prop>
+				<prop key="/bid_uid.do">bid_uidController</prop>
+				<prop key="/uid_epc.do">uid_epcController</prop>
+				<prop key="/reset.do">resetController</prop>
+				<prop key="/resetInfo.do">resetInfoController</prop>
+				<prop key="/epc.do">searchByEpcController</prop>
+				<prop key="/bid.do">searchByBidController</prop>
+				<prop key="/uid.do">searchByUidController</prop>
+				<prop key="/uidInBid.do">searchByUidBidController</prop>
+				<prop key="/recall.do">recallController</prop>
+				<prop key="/bidMap.do">bidMapController</prop>
+				<prop key="/bidTracing.do">bidTracingController</prop>
+				<prop key="/uidTracing.do">uidTracingController</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+	
+	
+
+</beans>

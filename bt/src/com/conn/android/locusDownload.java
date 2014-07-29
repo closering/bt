@@ -115,7 +115,7 @@ public class locusDownload extends HttpServlet{
 			
 			locus = liDao.searchByUsernameID(username, ID);
 			
-			if(locus != null || locus.size() < 1)
+			if(locus != null && locus.size() > 0)
 			{
 				res += username;
 				for(int j = 0; locus != null && j < locus.size(); j++)

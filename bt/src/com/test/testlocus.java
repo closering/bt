@@ -1,5 +1,6 @@
-package com.conn.android;
+package com.test;
 
+import com.hibernate.entity.Username2bidId;
 import java.io.IOException;
 import java.util.List;
 
@@ -25,80 +26,29 @@ import com.hibernate.entity.Username2bidId;
 import com.hibernate.impl.Bid2uidDAOImpl;
 import com.hibernate.impl.LocusinfoDAOImpl;
 import com.hibernate.impl.Username2bidDAOImpl;
+public class testlocus {
 
-public class locusDownload extends HttpServlet{
-
-	public locusDownload() {
-		super();
-	}
-	
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		request.setCharacterEncoding("GBK");
-		response.setCharacterEncoding("GBK");
-		
-		String data = request.getParameter("locusDownload");
-		String res = "";
-		if(data == null)
-		{
-			res = "{\"HEXLE\":\"0\"}"; //wrong input
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		long x,y,z;
+		x = System.currentTimeMillis();
+		String str1 = a();
+		y = System.currentTimeMillis();
+		String str2 = b();
+		z = System.currentTimeMillis();
+		if(str1.equals(str2)){
+			System.out.println(str1);
+			System.out.println(str2);
+			System.out.println(y-x);
+			System.out.println(z-y);
 		}
-		else
-		{
-			String[] dataSplit = data.split(",");
-			
-			if(dataSplit.length != 2)
-			{
-				res = "{\"HEXLE\":\"0\"}"; //wrong input
-			}
-			else
-			{
-				String type = dataSplit[0].toLowerCase();
-				res = "{\"HEXLE\":\"";
-				
-				
-				if(type.equals("bid"))
-				{
-					String bid = dataSplit[1];
-					res = getLocus(bid, res);
-				}
-				else if(type.equals("uid"))
-				{
-					Bid2uidId buId = new Bid2uidId();
-					Bid2uidDAO buDao = new Bid2uidDAOImpl();
-					String uid = dataSplit[1];
-										
-					List bidList = buDao.searchUid(uid);
-					for(int t = 0;bidList != null && t < bidList.size(); t ++)
-					{
-						buId = ((Bid2uid)bidList.get(t)).getId();
-						res = getLocus(buId.getBid(), res);
-					}
-					
-				}
-				else
-				{
-					res = "{\"HEXLE\":\"0"; //wrong input
-				}
-				if(res.charAt(res.length() - 1) == ';')
-				{
-					res = res.substring(0, res.length() - 1);
-				}
-				res += "\"}";
-			}
-		}
-		response.getOutputStream().print(res);	
 	}
-	
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		this.doGet(request, response);
-	}
-
-	private String getLocus(String bid, String res)
-	{
-		//之前的代码，代码效率低
-		/*Username2bidId ubId = new Username2bidId();
+	public static String a(){
+		String res="";
+		Username2bidId ubId = new Username2bidId();
 		Username2bid ub = new Username2bid();
 		Username2bidDAO ubDao = new Username2bidDAOImpl();
 		List list, locus;
@@ -110,7 +60,7 @@ public class locusDownload extends HttpServlet{
 		Locusinfo li = new Locusinfo();
 		LocusinfoDAO liDao = new LocusinfoDAOImpl();
 		
-		list = ubDao.searchByBid(bid);
+		list = ubDao.searchByBid("187992361049861");
 		for(int i = 0; list != null && i < list.size(); i++)
 		{
 			ub = (Username2bid)list.get(i);
@@ -135,9 +85,13 @@ public class locusDownload extends HttpServlet{
 				}
 				res += ";";
 			}
-		}*/
-		//////////////////修改后的代码
+		}
+		return res;
+	}
+	public static String b(){
+		String res="";
 		String hql = "from Locusinfo a where (a.id.username, a.id.id) in (select b.id.username, b.id.id from Username2bid as b where b.id.bid = ?)";
+		//String hql = "from Locusinfo";
 		Configuration config = new Configuration().configure();
 		SessionFactory sessionFactory = config.buildSessionFactory();
 		Session session = sessionFactory.openSession();
@@ -145,7 +99,7 @@ public class locusDownload extends HttpServlet{
 		try
 		{
 			Query qry = session.createQuery(hql);
-			qry.setParameter(0, bid);
+			qry.setParameter(0, "187992361049861");
 			list =qry.list();	
 		}
 		catch (Exception e) 
@@ -164,7 +118,7 @@ public class locusDownload extends HttpServlet{
 		String nowUsername = null;
 		Long nowId = (long)(-1);
 		
-		System.out.println(list.size());
+		//System.out.println(list.size());
 		
 		for(int i = 0; list != null && i < list.size(); i++)
 		{
@@ -172,6 +126,10 @@ public class locusDownload extends HttpServlet{
 			liId = li.getId();
 			nowUsername = liId.getUsername();
 			nowId = liId.getId();		
+			
+			//System.out.println(lastUsername+"   "+lastId);
+			//System.out.println(nowUsername+"   "+nowId);
+			//System.out.println("");
 			if(nowUsername.equals(lastUsername) && nowId.equals(lastId)){
 				
 			}
@@ -181,16 +139,17 @@ public class locusDownload extends HttpServlet{
 				}
 				res += nowUsername;
 			}
+			//res += nowUsername;
+			//res += ","+nowId;
 			res += "," + liId.getX().toString();
 			res += "," + liId.getY().toString();
 			res += "," + liId.getSerial().toString();
 			res += "," + liId.getDateServer().toString();
+			
 			lastUsername = nowUsername;
 			lastId = nowId;
 		}
 		res += ";";
-		System.out.println(res);
 		return res;
 	}
-	
 }

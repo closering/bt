@@ -27,18 +27,45 @@ public class login extends HttpServlet{
 		response.setCharacterEncoding("GBK");
 				
 		String data = request.getParameter("login");
+		System.out.println("login:"+data);
 		String res = "";
 		if(data != null)
 		{
 			String[] dataSplit = data.split(",");
-			if(dataSplit.length != 2)
+			if(dataSplit.length != 4)
 			{
+				System.out.println("dataSplit.length:"+dataSplit.length);
+				System.out.println("login:111111");
 				res = "{\"HEXLE\":\"0\"}";
 			}
 			else
 			{
 				String username = dataSplit[0];
 				String password = dataSplit[1];
+				String lat = dataSplit[3];
+				String lon = dataSplit[2];
+				
+				double latitude, longitude;
+				try
+				{
+					latitude = Double.parseDouble(lat);
+				}catch(NumberFormatException e)
+				{
+					res = "{\"HEXLE\":\"0\"}";
+					e.printStackTrace();
+					response.getOutputStream().print(res);
+					return;
+				}
+				try
+				{
+					longitude = Double.parseDouble(lon);
+				}catch(NumberFormatException e)
+				{
+					res = "{\"HEXLE\":\"0\"}";
+					e.printStackTrace();
+					response.getOutputStream().print(res);
+					return;
+				}
 				
 				//Userdata ud = new Userdata();
 				UserdataDAO uDao = new UserdataDAOImpl();
@@ -49,6 +76,16 @@ public class login extends HttpServlet{
 				}
 				else if(uDao.searchByNamePassword(username, password))
 				{
+					List list = uDao.searchByName(username);
+					UserdataId uId = ((Userdata)list.get(0)).getId();
+					
+					double dis = calDistance(longitude, latitude,uId.getY(),uId.getX());
+					/*if(dis > uId.getRadius())
+					{
+						res = "{\"HEXLE\":\"-3\"}"; //wrong place
+						response.getOutputStream().print(res);
+						return;
+					}*/
 					res = "{\"HEXLE\":\"1\"}"; //success
 				}
 				else

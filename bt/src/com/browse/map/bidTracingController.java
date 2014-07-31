@@ -5,6 +5,11 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 
@@ -67,65 +72,72 @@ public class bidTracingController extends AbstractController {
 				}
 				request.setAttribute("logisticsInfo", logisticsInfo);
 			}
-			//shaoshan--start
-			//get trace start
-			Username2bidId ubId = new Username2bidId();
-			Username2bid ub = new Username2bid();
-			Username2bidDAO ubDao = new Username2bidDAOImpl();
-			List listTrace, locus;
-			
-			String username;
-			Long ID;
-			
+			////////////////////////////////get trace start
+			String res = "";
+			String locusDownload="";
+			String hql = "from Locusinfo a where (a.id.username, a.id.id) in (select b.id.username, b.id.id from Username2bid as b where b.id.bid = ?)";
+			Configuration config = new Configuration().configure();
+			SessionFactory sessionFactory = config.buildSessionFactory();
+			Session session = sessionFactory.openSession();
+			List list1 = null;
+			try
+			{
+				Query qry = session.createQuery(hql);
+				qry.setParameter(0, bid);
+				list1 =qry.list();	
+			}
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			} 
+			finally
+			{
+				session.close();
+				sessionFactory.close();
+			}
 			LocusinfoId liId = new LocusinfoId();
 			Locusinfo li = new Locusinfo();
-			LocusinfoDAO liDao = new LocusinfoDAOImpl();
+			String lastUsername = null;
+			Long lastId = (long)(-1);
+			String nowUsername = null;
+			Long nowId = (long)(-1);
 			
-			listTrace = ubDao.searchByBid(bid);
-			String locusDownload="";
-			for(int i = 0; listTrace != null && i < listTrace.size(); i++)
+			System.out.println(list1.size());
+			
+			for(int i = 0; list1 != null && i < list1.size(); i++)
 			{
-				ub = (Username2bid)listTrace.get(i);
-				ubId = ub.getId();
-				
-				username = ubId.getUsername();
-				ID = ubId.getId();
-				
-				locus = liDao.searchByUsernameID(username, ID);
-				
-				if(locus != null && locus.size() > 0)
-				{
-					locusDownload += username;
-					for(int j = 0; locus != null && j < locus.size(); j++)
-					{
-						li = (Locusinfo)locus.get(j);
-						liId = li.getId();
-						//locusDownload += username;
-						locusDownload += "," + liId.getX().toString();
-						locusDownload += "," + liId.getY().toString();
-						locusDownload += "," + liId.getSerial().toString();
-						locusDownload += "," + liId.getDateServer().toString();
-						//locusDownload += "," + liId.getDateServer().toString()+",";
-					}
-					locusDownload += ";";
-					//locusDownload += ",";
+				li = (Locusinfo)list1.get(i);
+				liId = li.getId();
+				nowUsername = liId.getUsername();
+				nowId = liId.getId();		
+				if(nowUsername.equals(lastUsername) && nowId.equals(lastId)){
+					
 				}
+				else{
+					if(i>0){
+						res += ";";
+					}
+					res += nowUsername;
+				}
+				res += "," + liId.getX().toString();
+				res += "," + liId.getY().toString();
+				res += "," + liId.getSerial().toString();
+				res += "," + liId.getDateServer().toString();
+				lastUsername = nowUsername;
+				lastId = nowId;
 			}
+			res += ";";
+			locusDownload = res;
+			System.out.println("");
 			if(locusDownload.charAt(locusDownload.length()-1 ) == ';')
 			{
-				System.out.println("1111111");
 				locusDownload = locusDownload.substring(0, locusDownload.length() - 1);
 			}
-			System.out.println(locusDownload);
-			String ll[] = locusDownload.split(";");
-			System.out.println(ll.length);
-			System.out.println(locusDownload.length());
 			model.put("locusDownload", locusDownload);
 			//get trace end
 			//get marker start
 			List listMark;
-			Biduid2scanDAO busDaoMark = new Biduid2scanDAOImpl();
-			listMark = busDaoMark.searchByBid(bid, 1);
+			listMark = list;
 			
 			UserdataDAO uDao = new UserdataDAOImpl();
 			List listMark1 = null;
@@ -152,9 +164,7 @@ public class bidTracingController extends AbstractController {
 				
 				if(listMark1 == null)
 				{
-					System.out.println("2222222");
 					locusMark += ",";
-					
 				}
 				else
 				{
@@ -166,11 +176,8 @@ public class bidTracingController extends AbstractController {
 			
 			if(locusMark.charAt(locusMark.length()-1 ) == ',')
 			{
-				System.out.println("333333333");
 				locusMark = locusMark.substring(0, locusMark.length() - 1);
 			}
-			
-			System.out.println(locusMark);
 			String l[] = locusMark.split(",");
 			System.out.println(l.length);
 			System.out.println(locusMark.length());

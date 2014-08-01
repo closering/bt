@@ -85,6 +85,11 @@
 		<property name= "uidNotExist" value = "uidTracing"></property>
 		<property name= "uidExist" value = "showTracing"></property>
 	</bean>
+	<bean id = "monitorController" class = "com.controller.monitorController">
+		<property name= "unLogin" value = "login"></property>
+		<property name= "success" value = "monitor"></property>
+		<property name= "wrong" value = "monitor"></property>
+	</bean>
 	
 	<bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="mappings">
@@ -105,6 +110,7 @@
 				<prop key="/bidMap.do">bidMapController</prop>
 				<prop key="/bidTracing.do">bidTracingController</prop>
 				<prop key="/uidTracing.do">uidTracingController</prop>
+				<prop key="/monitor.do">monitorController</prop>
 			</props>
 		</property>
 	</bean>

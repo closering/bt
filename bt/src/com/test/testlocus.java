@@ -2,6 +2,8 @@ package com.test;
 
 import com.hibernate.entity.Username2bidId;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -33,7 +35,27 @@ public class testlocus {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		long x,y,z;
+		
+		/*Date a = new Date();
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Date b = new Date();
+		System.out.println(a);
+		System.out.println(b);
+		if(a.before(b)){
+			System.out.println("a is before than b");
+		}
+		else if(a.equals(b)){
+			System.out.println("a is equal to b");
+		}
+		else{
+			System.out.println("a is after than b");
+		}*/
+		/*long x,y,z;
 		x = System.currentTimeMillis();
 		String str1 = a();
 		y = System.currentTimeMillis();
@@ -44,7 +66,7 @@ public class testlocus {
 			System.out.println(str2);
 			System.out.println(y-x);
 			System.out.println(z-y);
-		}
+		}*/
 	}
 	public static String a(){
 		String res="";

@@ -26,8 +26,8 @@
 		<mapping resource="com/hibernate/entity/Uid2epc.hbm.xml" />
 		<mapping resource="com/hibernate/entity/Userdata.hbm.xml" />
 		<mapping resource="com/hibernate/entity/Locusinfo.hbm.xml" />
-		<mapping resource="com/hibernate/entity/Username2bid.hbm.xml" />
-
+		<mapping resource="com/hibernate/entity/MonitorInfo.hbm.xml" />
+		
 	</session-factory>
 
 </hibernate-configuration>

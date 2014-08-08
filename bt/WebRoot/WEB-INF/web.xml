@@ -127,4 +127,24 @@
   	<url-pattern>/com/conn/android/historyData</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+  	<servlet-name>boundAlarm</servlet-name>
+  	<servlet-class>com.conn.android.boundAlarm</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>boundAlarm</servlet-name>
+  	<url-pattern>/com/conn/android/boundAlarm</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>uploadPosition</servlet-name>
+  	<servlet-class>com.conn.android.uploadPosition</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>uploadPosition</servlet-name>
+  	<url-pattern>/com/conn/android/uploadPosition</url-pattern>
+  </servlet-mapping>
+  
 </web-app>

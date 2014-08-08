@@ -5,6 +5,7 @@ import cn.jpush.api.common.APIConnectionException;
 import cn.jpush.api.common.APIRequestException;
 import cn.jpush.api.push.PushResult;
 import cn.jpush.api.push.model.Message;
+import cn.jpush.api.push.model.Options;
 import cn.jpush.api.push.model.Platform;
 import cn.jpush.api.push.model.PushPayload;
 import cn.jpush.api.push.model.audience.Audience;
@@ -32,10 +33,11 @@ public class testPush {
 	public static PushPayload buildPushObject_all_all_alert() {
         //return PushPayload.alertAll("nishi shei a !!!");
         return PushPayload.newBuilder().setPlatform(Platform.android())
-        		.setAudience(Audience.tag("student"))
-        		.setAudience(Audience.alias("bucengyaoyuan1"))
+        		.setAudience(Audience.alias("ab"))
         		.setNotification(Notification.alert("wo shi zhang bingbing"))
-        		.setMessage(Message.content(""))
+        		.setOptions(Options.newBuilder()
+        						.setTimeToLive(10)
+        						.build())
         		.build();
     }
 }

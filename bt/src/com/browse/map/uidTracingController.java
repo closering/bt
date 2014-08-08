@@ -127,15 +127,11 @@ public class uidTracingController extends AbstractController {
 					}
 					if(locusDownload.charAt(locusDownload.length()-1 ) == ';')
 					{
-						System.out.println("1111111");
 						locusDownload = locusDownload.substring(0, locusDownload.length() - 1);
 					}
 					
 					
-					System.out.println(locusDownload);
 					String ll[] = locusDownload.split(";");
-					System.out.println(ll.length);
-					System.out.println(locusDownload.length());
 					//String l[]=ll.split(",");
 					model.put("locusDownload", locusDownload);
 					
@@ -171,7 +167,6 @@ public class uidTracingController extends AbstractController {
 						
 						if(listMark1 == null)
 						{
-							System.out.println("2222222");
 							locusMark += ",";
 							
 						}
@@ -185,14 +180,10 @@ public class uidTracingController extends AbstractController {
 					
 					if(locusMark.charAt(locusMark.length()-1 ) == ',')
 					{
-						System.out.println("333333333");
 						locusMark = locusMark.substring(0, locusMark.length() - 1);
 					}
 					
-					System.out.println(locusMark);
 					String l[] = locusMark.split(",");
-					System.out.println(l.length);
-					System.out.println(locusMark.length());
 					//String l[]=ll.split(",");
 					model.put("locusMark", locusMark);
 					

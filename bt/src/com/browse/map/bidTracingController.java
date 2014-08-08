@@ -102,8 +102,6 @@ public class bidTracingController extends AbstractController {
 			String nowUsername = null;
 			Long nowId = (long)(-1);
 			
-			System.out.println(list1.size());
-			
 			for(int i = 0; list1 != null && i < list1.size(); i++)
 			{
 				li = (Locusinfo)list1.get(i);
@@ -128,7 +126,6 @@ public class bidTracingController extends AbstractController {
 			}
 			res += ";";
 			locusDownload = res;
-			System.out.println("");
 			if(locusDownload.charAt(locusDownload.length()-1 ) == ';')
 			{
 				locusDownload = locusDownload.substring(0, locusDownload.length() - 1);
@@ -179,8 +176,6 @@ public class bidTracingController extends AbstractController {
 				locusMark = locusMark.substring(0, locusMark.length() - 1);
 			}
 			String l[] = locusMark.split(",");
-			System.out.println(l.length);
-			System.out.println(locusMark.length());
 			//String l[]=ll.split(",");
 			model.put("locusMark", locusMark);
 			

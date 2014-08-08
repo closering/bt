@@ -29,7 +29,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<a href="recall.jsp" onclick="subgo()" style="position:absolute;left:860px;top:40px;"><font color="#FFFFFF" size="4px">Recall&nbsp;&amp;&nbsp;Epc</font></a>
 	
 	<a href="tracing.jsp" onclick="subgo()" style="position:absolute;left:440px;top:70px;"><font color="#FFFFFF" size="4px">Product Tracing</font></a>
-	<a href="monitor.jsp" onclick="subgo()" style="position:absolute;left:585px;top:70px;"><font color="#FFFFFF" size="4px">Monitor</font></a>
+	<a href="monitorManage.do?" onclick="subgo()" style="position:absolute;left:585px;top:70px;"><font color="#FFFFFF" size="4px">Monitor</font></a>
 	
 	<img src = "./image/horizontal_line.png" style="position:absolute;left:150px;top:112px;">
   

@@ -16,12 +16,22 @@ import org.hibernate.cfg.Configuration;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 
+import cn.jpush.api.JPushClient;
+import cn.jpush.api.common.APIConnectionException;
+import cn.jpush.api.common.APIRequestException;
+import cn.jpush.api.push.PushResult;
+import cn.jpush.api.push.model.Platform;
+import cn.jpush.api.push.model.PushPayload;
+import cn.jpush.api.push.model.audience.Audience;
+import cn.jpush.api.push.model.notification.Notification;
+
 import com.hibernate.dao.MonitorInfoDAO;
 import com.hibernate.dao.UserdataDAO;
 import com.hibernate.entity.MonitorInfo;
 import com.hibernate.entity.MonitorInfoId;
 import com.hibernate.impl.MonitorInfoDAOImpl;
 import com.hibernate.impl.UserdataDAOImpl;
+import coml.jpush.Jpush;
 
 public class monitorController extends AbstractController{
 	private String wrong;
@@ -32,6 +42,7 @@ public class monitorController extends AbstractController{
 	private String longitude;
 	private String latitude;
 	private String radius;
+	private Timestamp time;
 	
 	@Override
 	protected ModelAndView handleRequestInternal(HttpServletRequest request,
@@ -94,19 +105,33 @@ public class monitorController extends AbstractController{
 		mo.setX(Double.parseDouble(latitude));
 		mo.setY(Double.parseDouble(longitude));
 		mo.setRadius(Double.parseDouble(radius));
-		mo.setSetDate(new Timestamp(System.currentTimeMillis()));
+		time = new Timestamp(System.currentTimeMillis());
+		mo.setSetDate(time);
 		
 		MonitorInfoDAO moD = new MonitorInfoDAOImpl();
 		List list = null;
 		list = moD.searchByUsernameAndMonitorName(userName, pupilUsername);
 		if(list==null || list.size()<1){
-			System.out.println("table monitorInfo does not exist (" + userName +"," + pupilUsername+")");
+			//System.out.println("table monitorInfo does not exist (" + userName +"," + pupilUsername+")");
 			moD.add(mo);
 			model.put("pupilUsername", "");
 			model.put("longitude", "");
 			model.put("latitude", "");
 			model.put("radius", "");
 			model.put("info", "Add monitor successfully!!!");
+			
+			//给指定客户端发送添加monitor消息{"operation":"add","monitorName":"","longitude":"","latitude":"","radius":"","setDate":""}
+			Jpush push = new Jpush();
+			String message = "{\"operation\":\"add\",";
+			message += "\"monitorName\":\"" + userName +"\",";
+			message += "\"longitude\":\"" + longitude +"\",";
+			message += "\"latitude\":\"" + latitude +"\",";
+			message += "\"radius\":\"" + radius +"\",";
+			message += "\"setDate\":\"" + time +"\"}";
+			
+			System.out.println(message);
+			push.pushMessage(pupilUsername, message);
+			
 			return new ModelAndView(getSuccess(), "myModel", model);
 		}
 		else{
@@ -124,6 +149,7 @@ public class monitorController extends AbstractController{
 			return new ModelAndView(getWrong(), "myModel", model);
 		}
 	}
+	
 	public String getUnLogin() {
 		return unLogin;
 	}

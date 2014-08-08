@@ -10,4 +10,5 @@ public interface MonitorInfoDAO {
 	public List searchByUsername(String username);
 	public List searchByMonitorName(String monitorName);
 	public List searchByUsernameAndMonitorName(String username, String monitorName);
+	public void update(MonitorInfo mData);
 }

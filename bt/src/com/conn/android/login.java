@@ -9,9 +9,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.hibernate.dao.MonitorInfoDAO;
 import com.hibernate.dao.UserdataDAO;
+import com.hibernate.entity.MonitorInfo;
+import com.hibernate.entity.MonitorInfoId;
 import com.hibernate.entity.Userdata;
 import com.hibernate.entity.UserdataId;
+import com.hibernate.impl.MonitorInfoDAOImpl;
 import com.hibernate.impl.UserdataDAOImpl;
 import java.lang.Math;
 
@@ -35,7 +39,6 @@ public class login extends HttpServlet{
 			if(dataSplit.length != 4)
 			{
 				System.out.println("dataSplit.length:"+dataSplit.length);
-				System.out.println("login:111111");
 				res = "{\"HEXLE\":\"0\"}";
 			}
 			else
@@ -80,13 +83,37 @@ public class login extends HttpServlet{
 					UserdataId uId = ((Userdata)list.get(0)).getId();
 					
 					double dis = calDistance(longitude, latitude,uId.getY(),uId.getX());
-					/*if(dis > uId.getRadius())
+					if(dis > uId.getRadius())
 					{
 						res = "{\"HEXLE\":\"-3\"}"; //wrong place
 						response.getOutputStream().print(res);
 						return;
-					}*/
-					res = "{\"HEXLE\":\"1\"}"; //success
+					}
+					res = "{\"HEXLE\":\"1\""; //success
+					MonitorInfoDAO moD = new MonitorInfoDAOImpl();
+					List listMonitor = moD.searchByMonitorName(username);
+					MonitorInfo mo = new MonitorInfo();
+					if(listMonitor==null || listMonitor.size()<1){
+						System.out.println(username + " has not guardians");
+					}
+					else{
+						res += ",\"monitor\":\"";
+						for(int i=0; i<listMonitor.size(); i++){
+							mo = (MonitorInfo)listMonitor.get(i);
+							res += mo.getId().getUserName();
+							res += ",";
+							res += mo.getX();
+							res += ",";
+							res += mo.getY();
+							res += ",";
+							res += mo.getRadius();
+							res += ",";
+							res += mo.getSetDate();
+							res += ";";
+						}
+						res += "\"";
+					}
+					res += "}";	
 				}
 				else
 				{
@@ -98,6 +125,7 @@ public class login extends HttpServlet{
 		{
 			res = "{\"HEXLE\":\"0\"}";//wrong input
 		}
+		System.out.println(res);
 		response.getOutputStream().print(res);
 	}
 	

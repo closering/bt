@@ -90,6 +90,27 @@
 		<property name= "success" value = "monitor"></property>
 		<property name= "wrong" value = "monitor"></property>
 	</bean>
+	<bean id = "monitorManageController" class = "com.controller.monitorManageController">
+		<property name= "unLogin" value = "login"></property>
+		<property name= "success" value = "monitor_manage"></property>
+		<property name= "wrong" value = "monitor_manage"></property>
+	</bean>
+	<bean id = "editMonitorController" class = "com.controller.editMonitorController">
+		<property name= "unLogin" value = "login"></property>
+		<property name= "success" value = "editMonitor"></property>
+		<property name= "wrong" value = "editMonitor"></property>
+	</bean>
+	<bean id = "deleteMonitorController" class = "com.controller.deleteMonitorController">
+		<property name= "unLogin" value = "login"></property>
+		
+	</bean>
+	<bean id = "monitorTracingController" class = "com.controller.monitorTracingController">
+		<property name= "unLogin" value = "login"></property>
+		<property name= "monitorNotExist" value = "showMonitorNoTracing"></property>
+		<property name= "monitorExist" value = "showMonitorTracing"></property>
+		<property name= "monitorNoTrace" value = "showMonitorNoTracing"></property>
+		
+	</bean>
 	
 	<bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="mappings">
@@ -111,6 +132,10 @@
 				<prop key="/bidTracing.do">bidTracingController</prop>
 				<prop key="/uidTracing.do">uidTracingController</prop>
 				<prop key="/monitor.do">monitorController</prop>
+				<prop key="/monitorManage.do">monitorManageController</prop>
+				<prop key="/editMonitor.do">editMonitorController</prop>
+				<prop key="/deleteMonitor.do">deleteMonitorController</prop>
+				<prop key="/monitorTracing.do">monitorTracingController</prop>
 			</props>
 		</property>
 	</bean>

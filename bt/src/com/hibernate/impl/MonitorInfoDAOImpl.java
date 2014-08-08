@@ -7,6 +7,8 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.Transaction;
+import org.hibernate.HibernateException;
 
 import com.hibernate.dao.BaseHibernateDAO;
 import com.hibernate.dao.MonitorInfoDAO;
@@ -71,5 +73,26 @@ public class MonitorInfoDAOImpl extends BaseHibernateDAO implements MonitorInfoD
 			sessionFactory.close();
 		}
 		return list;
+	}
+	public void update(MonitorInfo mData)
+	{
+		Session session=null;  
+        Transaction transaction=null; 
+        try{
+        Configuration config = new Configuration().configure();
+		SessionFactory sessionFactory = config.buildSessionFactory();
+		session = sessionFactory.openSession();
+		transaction = session.beginTransaction();
+		session.saveOrUpdate(mData);
+		transaction.commit();
+        }catch (HibernateException e) {
+			// TODO: handle exception
+        	if(transaction!=null)
+        		transaction.rollback();
+		}finally{
+			if(session!=null)
+				session.close();
+		}
+		
 	}
 }

@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>monitor</title>
+    <title> edit monitor</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -38,24 +38,44 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	 mapObj=new AMap.Map("container",{
  	 view: new AMap.View2D({//创建地图二维视口
   	 center:position,//创建中心点坐标
-     zoom:18, //设置地图缩放级别
+     zoom:13, //设置地图缩放级别
      rotation:0 //设置地图旋转角度
    }),
    lang:"zh_cn"//设置地图语言类型，默认：中文简体
  });//创建地图实例
  
- //为地图注册click事件获取鼠标点击出的经纬度坐标
-    var clickEventListener=AMap.event.addListener(mapObj,'click',function(e){
-        document.getElementById("longitude").value=e.lnglat.getLng();
+  circle = new AMap.Circle({
+   center:new AMap.LngLat( document.getElementById("longitude").value,document.getElementById("latitude").value),// 圆心位置
+   radius:document.getElementById("radius").value*1000, //半径
+   strokeColor: "#F33", //线颜色
+   strokeOpacity: 1, //线透明度
+   strokeWeight: 3, //线粗细度
+   fillColor: "#ee2200", //填充颜色
+   fillOpacity: 0.35//填充透明度
+   });
+   circle.setMap(mapObj);
+   
+    var clickCircleEventListener=AMap.event.addListener(circle,'click',function(e){
+    document.getElementById("longitude").value=e.lnglat.getLng();
         document.getElementById("latitude").value=e.lnglat.getLat(); 
     });
+ 
+ //为地图注册click事件获取鼠标点击出的经纬度坐标
+    var clickEventListener=AMap.event.addListener(mapObj,'click',function(e){
+    // circle.setMap(null);
+        document.getElementById("longitude").value=e.lnglat.getLng();
+        document.getElementById("latitude").value=e.lnglat.getLat(); 
+        
+    });
     
-
+    
+    
 //调整视野到合适的位置及级别                 
-//mapObj.setFitView();  
+mapObj.setFitView();  
     
  }
   	
+ 
   function updateCircle(){
   //新圆形属性
   /*var circleoptions={      
@@ -68,9 +88,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    fillOpacity: 0.35//填充透明度
   };
     circle.setOptions(circleoptions);//更新圆属性*/
-    //alert("1");
-    circle1 = new AMap.Circle({  
-   center:new AMap.LngLat(document.getElementById("longitude").value,document.getElementById("latitude").value),// 圆心位置
+    circle1 = new AMap.Circle({
+   center:new AMap.LngLat( document.getElementById("longitude").value,document.getElementById("latitude").value),// 圆心位置
    radius:document.getElementById("radius").value*1000, //半径
    strokeColor: "#0000FF", //线颜色
    strokeOpacity: 1, //线透明度
@@ -78,7 +97,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    fillColor: "#ee2200", //填充颜色
    fillOpacity: 0.35//填充透明度
    });
-   // alert("2");
    circle1.setMap(mapObj);
     var clickCircleEventListener=AMap.event.addListener(circle1,'click',function(e){
     document.getElementById("longitude").value=e.lnglat.getLng();
@@ -88,7 +106,32 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  }
  </script>
 	
+	<script type="text/javascript">
+function check()
+{
+	if(document.getElementById("longitude").value.length==0)
+	{
+		alert('please clik the map to get longitude!');
+		document.getElementById("longitude").focus();
+		return false;
+	}
 	
+	if(document.getElementById("latitude").value.length==0)
+	{
+		alert('please clik the map to get latitude!');
+		document.getElementById("latitude").focus();
+		return false;
+	}
+	
+	if(document.getElementById("radius").value.length==0)
+	{
+		alert('please input the radius!');
+		document.getElementById("radius").focus();
+		return false;
+	}
+
+}
+</script>
 	
 	
   </head>
@@ -103,15 +146,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<jsp:param name="pageTitle" value="header.jsp"/>
   		<jsp:param name="pageSlogan" value="header" />
 	</jsp:include>
-	<div style="position:absolute;left:250px;top:140px;"><h3>add monitor info</h3></div>
-	<div style="position:absolute;left:250px;top:500px;">
-		${myModel.info}</br>
+	<div style="position:absolute;left:250px;top:140px;"><h3>edit monitor info</h3></div>
+	  <div style="position:absolute;left:180px;top:460px;">
+		<h4>${myModel.info}</h4></br> 
 	</div>
-	<form method="post" action="/bt/monitor.do">
+	
+	<form method="post" action="/bt/editMonitor.do">
 		 <table style="position:absolute;left:150px;top:200px;">
 		 	<tr>
 		 		<td class = "tdright">Pupil UserName:</td>
-		 		<td class = "tdleft"><input  type = "text" name = "pupilUsername" value = ${myModel.pupilUsername}><td>	 		
+		 		
+		 		<td class = "tdleft">
+		 		<% if(request.getParameter("monitorName")!=null)
+		 		{%>
+		 		<input  type = "text" name = "monitorName" readonly="readonly" value=<%=request.getParameter("monitorName") %>>
+		 		<%}else{%>
+		 		<input  type = "text" name = "monitorName" readonly="readonly" value=${myModel.monitorName}>
+		 		<%} %>
+		 		<td>	 		
 		 	</tr>
 		 	<tr>
 	      			<td>&nbsp;</td>
@@ -121,21 +173,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	      		</tr>
 		 	<tr>
 		 		<td class = "tdright">Longitude :</td>
-		 		<td class = "tdleft"><input class="inputstyle" type = "text" id = "longitude" name = "longitude" readonly="readonly" value = ${myModel.longitude}></td>
+		 		<td class = "tdleft"><input class="inputstyle" type = "text" id = "longitude" name = "longitude" readonly="readonly" value=<%=request.getParameter("longitude") %> ></td>
 		 	</tr>
 		 	<tr>
 		 		<td class = "tdright">Latitude :</td>
-		 		<td class = "tdleft"><input class="inputstyle" type = "text" id="latitude" name="latitude" readonly="readonly" value = ${myModel.latitude}></td>
+		 		<td class = "tdleft"><input class="inputstyle" type = "text" id="latitude" name="latitude" readonly="readonly" value=<%=request.getParameter("latitude") %>></td>
 		 	</tr>
 		 	<tr>
 		 		<td class = "tdright">Radius :</td>
-		 		<td class = "tdleft"><input type = "text" name="radius" id="radius" value = ${myModel.radius}> km</td>
+		 		<td class = "tdleft"><input type = "text"  id = "radius" name="radius" value=<%=request.getParameter("radius") %>> km</td>
 		 	</tr>
 		 	<tr>
+				
 					<td>&nbsp;</td>
-					<td>&nbsp;&nbsp;&nbsp;<input type="submit" style="width:70px;height:30px;" value = "add">
+					<td><input type="submit" value = "edit" style="width:70px;height:30px;" onclick="return check();">
 					<input type="button" value = "cancel" style="width:70px;height:30px;" onclick="javascript:history.back(-1);">
-					<input type="button" value = "check" style="width:70px;height:30px;" onclick="javascript:updateCircle()">
+						<input type="button" value = "check" style="width:70px;height:30px;" onclick="javascript:updateCircle()">
 					<td>
 			</tr>
 		 </table>
